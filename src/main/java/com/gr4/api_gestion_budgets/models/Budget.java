@@ -18,7 +18,7 @@ public class Budget{
     @Column(nullable = false)
     private int mt_total;
 
-
+   //relation
 
     @OneToOne(mappedBy = "budget")
     private User user;
