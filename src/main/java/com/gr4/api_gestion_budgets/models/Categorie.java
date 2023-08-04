@@ -29,7 +29,7 @@ public class Categorie {
 
     @Column
     private Integer mont_dalerte;
-//text
+
     @ManyToOne
     @JoinColumn(name = "id_budget")
     private  Budget budget;
