@@ -33,7 +33,7 @@ public class Depense {
     private String description;
 
     @ManyToOne
-    @JoinColumn(name = "Category")
+    @JoinColumn(name = "Categorie")
     private Categorie categorie;
 
     @ManyToOne

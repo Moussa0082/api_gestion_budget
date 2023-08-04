@@ -34,7 +34,7 @@ public class Categorie {
     @JoinColumn(name = "id_budget")
     private  Budget budget;
 
-    @OneToMany(mappedBy = "Depenses")
+    @OneToMany(mappedBy = "categorie")
     private List<Depense> depense;
 
 
