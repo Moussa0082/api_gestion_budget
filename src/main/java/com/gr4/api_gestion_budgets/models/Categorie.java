@@ -35,7 +35,7 @@ public class Categorie {
     private  Budget budget;
 
     @OneToMany(mappedBy = "Depenses")
-    private List<Depenses> depenses;
+    private List<Depense> depense;
 
 
 }

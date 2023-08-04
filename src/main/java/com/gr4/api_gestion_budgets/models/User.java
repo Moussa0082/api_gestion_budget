@@ -1,17 +1,11 @@
 package com.gr4.api_gestion_budgets.models;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
+import lombok.Data;
 
 
-
+@Entity
+@Data
 public class User {
 
     public enum Sexe{
@@ -42,7 +36,7 @@ public class User {
     @Column(nullable = false, length= 50)
     private String password;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id")
     private Budget budget;
 

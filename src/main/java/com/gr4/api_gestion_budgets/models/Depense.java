@@ -38,7 +38,7 @@ public class Depense {
 
     @ManyToOne
     @JoinColumn(name = "id_utilisateur")
-    private Utilisateur utilisateur;
+    private User user;
 
 
 
