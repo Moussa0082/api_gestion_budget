@@ -1,5 +1,7 @@
 package com.gr4.api_gestion_budgets.models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -19,11 +21,11 @@ public class Categorie {
     @Column
     private Integer mont_cat;
 
-    @Temporal(TemporalType.DATE)
+    @JsonFormat(pattern = "yyyy-MM-dd")
     @Column
     private Date date_debut;
 
-    @Temporal(TemporalType.DATE)
+    @JsonFormat(pattern = "yyyy-MM-dd")
     @Column
     private Date date_fin;
 
@@ -35,7 +37,12 @@ public class Categorie {
     private  Budget budget;
 
     @OneToMany(mappedBy = "categorie")
+    @JsonIgnore
     private List<Depense> depense;
+
+    @OneToMany(mappedBy = "alerte")
+    @JsonIgnore
+    private List<Alerte> alerte;
 
 
 }
