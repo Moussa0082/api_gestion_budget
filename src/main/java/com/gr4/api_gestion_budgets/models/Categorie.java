@@ -37,11 +37,9 @@ public class Categorie {
     private  Budget budget;
 
     @OneToMany(mappedBy = "categorie")
-    @JsonIgnore
     private List<Depense> depense;
 
-    @OneToMany(mappedBy = "alerte")
-    @JsonIgnore
+    @OneToMany(mappedBy = "categorie")
     private List<Alerte> alerte;
 
 

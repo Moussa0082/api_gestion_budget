@@ -21,7 +21,7 @@ public class Alerte {
     private Date date_alerte;
 
     @ManyToOne
-    @JoinColumn(name = "categorie")
+    @JoinColumn(name = "id_alerte")
     private Categorie categorie;
 
 }
