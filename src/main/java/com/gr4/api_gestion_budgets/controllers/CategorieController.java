@@ -6,31 +6,38 @@ import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/api")
+@RequestMapping("/apiCat")
 public class CategorieController {
     private final CategorieService categorieService;
 
-    @PostMapping("/categorie")
-    public Categorie create(@RequestBody Categorie quiz){
-        return categorieService.creer(quiz);
+    //Créer une categorie
+    @PostMapping("/create")
+    public Categorie create(@RequestBody Categorie categorie){
+        return categorieService.creer(categorie);
     }
-
+    //Afficher les categories
     @GetMapping("/read")
     public List<Categorie> read(){
         return categorieService.lire();
     }
+    //Lire une categorie spécifique
+    @GetMapping("/read/{id}")
+    public Optional<Categorie> getCustomer(@PathVariable Long id) {
+        return categorieService.findById(id);
+    }
 
-
+    //Mettre à jour une catégorie
     @PutMapping("/update/{id}")
     public Categorie Update(@PathVariable long id, @RequestBody Categorie quiz){
         return categorieService.modifier(id, quiz);
     }
 
-
-    @DeleteMapping("/delete")
+    //Effacer une categorie
+    @DeleteMapping("/delete/{id}")
     public String delete(@PathVariable long id){
         return categorieService.supprimer(id);
     }

@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -39,5 +40,10 @@ public class CategorieServiceImp implements CategorieService {
     public String supprimer(long id) {
         categorieRepository.deleteById(id);
         return "Categorie supprimée avec succés";
+    }
+
+    @Override
+    public Optional<Categorie> findById(Long id) {
+        return categorieRepository.findById(id);
     }
 }
