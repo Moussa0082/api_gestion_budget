@@ -28,10 +28,6 @@ public class CategorieServiceImp implements CategorieService {
         return categorieRepository.findById(id)
                 .map(ca -> {
                     ca.setNom_cat(categorie.getNom_cat());
-                    ca.setMont_cat(categorie.getMont_cat());
-                    ca.setMont_dalerte(categorie.getMont_dalerte());
-                    ca.setDate_debut(categorie.getDate_debut());
-                    ca.setDate_fin(categorie.getDate_fin());
                     return categorieRepository.save(ca);
                 }).orElseThrow(() -> new RuntimeException(("Categorie non trouvé")));
     }

@@ -11,7 +11,7 @@ import java.util.Date;
 public class Alerte {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
 
     @Column
     private String message;
@@ -21,7 +21,7 @@ public class Alerte {
     private Date date_alerte;
 
     @ManyToOne
-    @JoinColumn(name = "id_alerte")
-    private Categorie categorie;
+    @JoinColumn(name = "id_budget")
+    private Budget budget;
 
 }
