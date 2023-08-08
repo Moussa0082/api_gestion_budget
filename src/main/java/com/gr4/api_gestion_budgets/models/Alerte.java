@@ -5,23 +5,23 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.util.Date;
-import java.util.List;
 
 @Entity
 @Data
-public class Categorie {
+public class Alerte {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @Column
-    private String nom_cat;
+    private String message;
 
-    @OneToOne(mappedBy = "categorie")
-    private  Budget budget;
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    @Column
+    private Date date_alerte;
 
-    @OneToMany(mappedBy = "categorie")
-    private List<Depense> depense;
-
+    @ManyToOne
+    @JoinColumn(name = "id_budget")
+    private Budget budget;
 
 }

@@ -1,5 +1,6 @@
 package com.gr4.api_gestion_budgets.models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -25,7 +26,7 @@ public class Depense {
     @Column
     private Integer mont_depense;
 
-    @Temporal(TemporalType.DATE)
+    @JsonFormat(pattern = "yyyy-MM-dd")
     @Column
     private Date date_depense;
 
@@ -39,7 +40,6 @@ public class Depense {
     @ManyToOne
     @JoinColumn(name = "id_utilisateur")
     private User user;
-
 
 
 }
