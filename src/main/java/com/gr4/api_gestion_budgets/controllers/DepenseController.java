@@ -17,11 +17,7 @@ import java.util.Optional;
 public class DepenseController {
     private DepenseService depenseService;
 
-    //Créer une dépense
-    @PostMapping("/create")
-    public Depense create(@RequestBody Depense depense){
-        return depenseService.creer(depense);
-    }
+
     //Lire une depense spécifique
     @GetMapping("/read/{id}")
     public Optional<Depense> getCustomer(@PathVariable int id) {

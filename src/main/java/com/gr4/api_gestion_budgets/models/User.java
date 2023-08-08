@@ -46,5 +46,4 @@ public class User {
     @JsonIgnore
     private Budget budget;
 
-   
 }

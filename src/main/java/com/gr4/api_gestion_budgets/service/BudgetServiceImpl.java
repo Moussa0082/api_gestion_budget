@@ -10,7 +10,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.gr4.api_gestion_budgets.models.Budget;
+import com.gr4.api_gestion_budgets.models.Depense;
 import com.gr4.api_gestion_budgets.repository.BudgetRepository;
+import com.gr4.api_gestion_budgets.repository.DepenseRepository;
 
 @Service
 public class BudgetServiceImpl implements BudgetService{
@@ -18,6 +20,14 @@ public class BudgetServiceImpl implements BudgetService{
     @Autowired
     private BudgetRepository budgetRepository;
 
+    @Autowired
+    private DepenseRepository depenseRepository;
+
+    
+    public BudgetServiceImpl(BudgetRepository budgetRepository, DepenseRepository depenseRepository) {
+        this.budgetRepository = budgetRepository;
+        this.depenseRepository = depenseRepository;
+    }
         
 
     @Override
@@ -62,14 +72,40 @@ public class BudgetServiceImpl implements BudgetService{
         return new ResponseEntity<>("supprimer avec succès", HttpStatus.OK);
     }
 
+   
 
+   // Méthode pour ajouter une dépense à un budget donné
+    public Budget addDepenseToBudget(int Id, Depense depense) {
+        Budget existingBudget = budgetRepository.findById(Id).orElse(null);
 
+        if (existingBudget != null) {
+            int montantDepense = depense.getMont_depense();
+            int nouveauMontantTotal = existingBudget.getMont_bud() - montantDepense;
 
+            // Vérifier que le montant total ne devient pas négatif
+            if (nouveauMontantTotal >= 0) {
+                existingBudget.setMont_bud(nouveauMontantTotal);
+
+                // Enregistrer la modification du budget dans la base de données
+                budgetRepository.save(existingBudget);
+
+                // Définir la relation entre la dépense et le budget
+                depense.setBudget(existingBudget);
+                depenseRepository.save(depense);
+
+                return existingBudget;
+            } else {
+                throw new IllegalArgumentException("Montant de la dépense trop élevé pour le budget actuel.");
+            }
+        } else {
+            throw new IllegalArgumentException("Budget non trouvé avec l'ID spécifié.");
+        }
+    }
 
 
 
 
     
-    }
+}
     
 

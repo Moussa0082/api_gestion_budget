@@ -37,8 +37,6 @@ public class Depense {
     @Column
     private String description;
 
-
-
     @ManyToOne
     @JoinColumn(name = "id_utilisateur")
     @JsonIgnore

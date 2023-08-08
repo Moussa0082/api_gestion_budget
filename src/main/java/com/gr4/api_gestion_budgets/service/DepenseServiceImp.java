@@ -14,12 +14,6 @@ public class DepenseServiceImp implements DepenseService {
 
     private  DepenseRepository depensesRepository;
 
-    @Override
-    public Depense creer(Depense depense) {
-
-        
-        return depensesRepository.save(depense);
-    }
 
     @Override
     public List<Depense> lire() {

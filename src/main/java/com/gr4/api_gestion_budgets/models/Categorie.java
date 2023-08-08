@@ -23,5 +23,4 @@ public class Categorie {
     private  Budget budget;
 
 
-
 }
