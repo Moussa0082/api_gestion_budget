@@ -1,6 +1,7 @@
 package com.gr4.api_gestion_budgets.models;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -33,10 +34,14 @@ public class Budget{
     private User user;
 
     @OneToMany(mappedBy = "budget")
+    @JsonIgnore
     private List<Alerte> alerte;
 
     @OneToOne
-    @JoinColumn(name = "id_categorie")
+    @JoinColumn(name = "id_categorie", nullable = false)
     private Categorie categorie;
 
+    @OneToMany(mappedBy = "budget")
+    @JsonIgnore
+    private List<Depense> depense;
 }

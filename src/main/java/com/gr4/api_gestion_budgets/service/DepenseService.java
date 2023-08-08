@@ -13,5 +13,5 @@ public interface DepenseService {
 
     List<Depense> lire();
 
-    Optional<Depense> findById(Long id);
+    Optional<Depense> findById(Integer id);
 }

@@ -24,7 +24,7 @@ public class CategorieServiceImp implements CategorieService {
     }
 
     @Override
-    public Categorie modifier(long id, Categorie categorie) {
+    public Categorie modifier(Integer id, Categorie categorie) {
         return categorieRepository.findById(id)
                 .map(ca -> {
                     ca.setNom_cat(categorie.getNom_cat());
@@ -33,13 +33,13 @@ public class CategorieServiceImp implements CategorieService {
     }
 
     @Override
-    public String supprimer(long id) {
+    public String supprimer(Integer id) {
         categorieRepository.deleteById(id);
         return "Categorie supprimée avec succés";
     }
 
     @Override
-    public Optional<Categorie> findById(Long id) {
+    public Optional<Categorie> findById(Integer id) {
         return categorieRepository.findById(id);
     }
 }
