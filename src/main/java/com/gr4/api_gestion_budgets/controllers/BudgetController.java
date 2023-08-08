@@ -3,6 +3,7 @@ package com.gr4.api_gestion_budgets.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.gr4.api_gestion_budgets.models.Budget;
+import com.gr4.api_gestion_budgets.models.Depense;
 import com.gr4.api_gestion_budgets.repository.BudgetRepository;
+import com.gr4.api_gestion_budgets.service.BudgetService;
 import com.gr4.api_gestion_budgets.service.BudgetServiceImpl;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -28,9 +31,10 @@ public class BudgetController {
     @Autowired
     BudgetRepository budgetRepository;
 
-    // public BudgetController(BudgetServiceImpl budgetServiceImpl){
-    //     this.budgetServiceImpl = budgetServiceImpl;
-    // }
+   
+    public BudgetController(BudgetServiceImpl budgetServiceImpl) {
+        this.budgetServiceImpl = budgetServiceImpl;
+    }
      
     @Operation(summary = "Ajouter un budget")
     @PostMapping("add")
@@ -49,12 +53,27 @@ public class BudgetController {
     }
 
 
+
     
     @Operation(summary = "Afficher la liste des budgets existants")
     @GetMapping("/all")
     public ResponseEntity<List<Budget>> getAllBudget() {
 
         return budgetServiceImpl.getAllBudget();
+    }
+
+
+    // Endpoint pour ajouter une dépense à un budget
+    @PutMapping("/{Id}/addDepense")
+    public ResponseEntity<Budget> addDepenseToBudget(@PathVariable int Id, @RequestBody Depense depense) {
+        try {
+            Budget updatedBudget = budgetServiceImpl.addDepenseToBudget(Id, depense);
+            return new ResponseEntity<>(updatedBudget, HttpStatus.CREATED);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
 }
