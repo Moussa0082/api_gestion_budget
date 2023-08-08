@@ -45,7 +45,7 @@ public class Depense {
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "id_budget")
+    @JoinColumn(name = "id_budget", nullable = false)
     private Budget budget;
 
 
