@@ -1,12 +1,17 @@
 package com.gr4.api_gestion_budgets.models;
 
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
-@AllArgsConstructor
-@NoArgsConstructor
+import jakarta.persistence.*;
+import lombok.Data;
+
+
+
+import java.util.Date;
+import java.util.List;
+
+
 @Entity
 @Data
 public class Budget{
@@ -15,13 +20,36 @@ public class Budget{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-   
 
-    @Column(nullable = false)
-    private int mt_total;
+    @Column
+    private Integer mont_bud;
 
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    @Column
+    private Date date_debut;
+
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    @Column
+    private Date date_fin;
+
+    @Column
+    private Integer mont_dalerte;
+
+    
     @OneToOne(mappedBy = "budget")
     private User user;
-   
+
+    
+    @OneToMany(mappedBy = "budget")
+    @JsonIgnore
+    private List<Alerte> alerte;
+
+    @OneToOne
+    @JoinColumn(name = "id_categorie")
+    private Categorie categorie;
+
+    @OneToMany(mappedBy = "budget")
+    @JsonIgnore
+    private List<Depense> depense;
 
 }

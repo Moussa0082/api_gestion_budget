@@ -11,10 +11,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.gr4.api_gestion_budgets.models.Budget;
 import com.gr4.api_gestion_budgets.models.User;
 import com.gr4.api_gestion_budgets.repository.UserRepository;
-import com.gr4.api_gestion_budgets.services.UserServiceImpl;
+import com.gr4.api_gestion_budgets.service.UserServiceImpl;
 
 @RestController
 @RequestMapping("user")

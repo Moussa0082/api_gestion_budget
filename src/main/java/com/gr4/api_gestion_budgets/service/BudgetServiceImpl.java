@@ -1,4 +1,4 @@
-package com.gr4.api_gestion_budgets.services;
+package com.gr4.api_gestion_budgets.service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.gr4.api_gestion_budgets.interfacesServices.BudgetService;
 import com.gr4.api_gestion_budgets.models.Budget;
 import com.gr4.api_gestion_budgets.repository.BudgetRepository;
 
@@ -21,26 +20,34 @@ public class BudgetServiceImpl implements BudgetService{
         
 
     @Override
-   public ResponseEntity<Integer> addBudget(Budget budget) {
-    // Chercher le budget existant dans la base de données par son id
-           throw new UnsupportedOperationException("Unimplemented method 'updateBudget'");
+   public ResponseEntity<String> addBudget(Budget budget) {
 
-}
+        budgetRepository.save(budget);
+    return new ResponseEntity<>("Budget créer avec succèss", HttpStatus.CREATED);
+    
+   }
 
-
-
+   
 
     @Override
-    public ResponseEntity<String> updateBudget(Integer id, Budget budget) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'updateBudget'");
+    public Budget modifier(Integer id, Budget budget) {
+        return budgetRepository.findById(id)
+        .map(bud -> {
+            bud.setMont_bud(budget.getMont_bud());
+            bud.setMont_dalerte(budget.getMont_dalerte());
+            bud.setDate_debut(budget.getDate_debut());
+            bud.setDate_fin(budget.getDate_fin());
+            return budgetRepository.save(bud);
+        }).orElseThrow(() -> new RuntimeException(("Budget non trouvé")));
     }
+
+    
 
     @Override
     public ResponseEntity<List<Budget>> getAllBudget() {
        try {
             return new ResponseEntity<>(budgetRepository.findAll(), HttpStatus.OK);
-        } catch (Exception e) {
+        } catch(Exception e) {
              e.printStackTrace();
         }
        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.BAD_REQUEST);
@@ -52,6 +59,14 @@ public class BudgetServiceImpl implements BudgetService{
         budgetRepository.deleteById(id);
         return new ResponseEntity<>("supprimer avec succès", HttpStatus.OK);
     }
+
+
+
+
+
+
+
+
     
     }
     
