@@ -26,19 +26,19 @@ public class CategorieController {
     }
     //Lire une categorie spécifique
     @GetMapping("/read/{id}")
-    public Optional<Categorie> getCustomer(@PathVariable Long id) {
+    public Optional<Categorie> getCustomer(@PathVariable int id) {
         return categorieService.findById(id);
     }
 
     //Mettre à jour une catégorie
     @PutMapping("/update/{id}")
-    public Categorie Update(@PathVariable long id, @RequestBody Categorie quiz){
-        return categorieService.modifier(id, quiz);
+    public Categorie Update(@PathVariable int id, @RequestBody Categorie categorie){
+        return categorieService.modifier(id, categorie);
     }
 
     //Effacer une categorie
     @DeleteMapping("/delete/{id}")
-    public String delete(@PathVariable long id){
+    public String delete(@PathVariable int id){
         return categorieService.supprimer(id);
     }
 

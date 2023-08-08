@@ -25,7 +25,7 @@ public class DepenseServiceImp implements DepenseService {
     }
 
     @Override
-    public Optional<Depense> findById(Long id) {
+    public Optional<Depense> findById(Integer id) {
         return depenseRepository.findById(id);
     }
 
