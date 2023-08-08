@@ -8,8 +8,8 @@ import com.gr4.api_gestion_budgets.models.Budget;
 
 public interface BudgetService{
 
-  //Créer un budget
-    ResponseEntity<String> addBudget(Budget budget);
+    //Créer un budget
+    ResponseEntity<Integer> addBudget(Budget budget);
 
     //Modifier budget
     ResponseEntity<String> updateBudget(Integer id, Budget budget );
