@@ -16,6 +16,8 @@ import com.gr4.api_gestion_budgets.models.Budget;
 import com.gr4.api_gestion_budgets.repository.BudgetRepository;
 import com.gr4.api_gestion_budgets.service.BudgetServiceImpl;
 
+import io.swagger.v3.oas.annotations.Operation;
+
 @RestController
 @RequestMapping("/budget")
 public class BudgetController {
@@ -29,7 +31,8 @@ public class BudgetController {
     // public BudgetController(BudgetServiceImpl budgetServiceImpl){
     //     this.budgetServiceImpl = budgetServiceImpl;
     // }
-         
+     
+    @Operation(summary = "Ajouter un budget")
     @PostMapping("add")
     ResponseEntity<String> addBudget(@RequestBody Budget budget){
         // Budget br = budgetRepository.findBudgetById(null);
@@ -38,6 +41,7 @@ public class BudgetController {
 
     }
     
+    @Operation(summary = "Mettre à jour un budget existant")
    @PutMapping("/update/{id}")
     public Budget Update(@PathVariable Integer id, @RequestBody Budget budget){
 
@@ -46,7 +50,7 @@ public class BudgetController {
 
 
     
-
+    @Operation(summary = "Afficher la liste des budgets existants")
     @GetMapping("/all")
     public ResponseEntity<List<Budget>> getAllBudget() {
 
