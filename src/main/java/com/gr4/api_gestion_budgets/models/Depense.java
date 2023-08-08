@@ -10,6 +10,9 @@ import java.util.Date;
 @Data
 public class Depense {
 
+
+  
+
     public enum TypeDepense{
         MENSUEL,
         QUOTIDIEN,
@@ -33,13 +36,18 @@ public class Depense {
     @Column
     private String description;
 
-    @ManyToOne
-    @JoinColumn(name = "categorie")
-    private Categorie categorie;
+    // @ManyToOne
+    // @JoinColumn(name = "categorie")
+    // private Categorie categorie;
 
     @ManyToOne
     @JoinColumn(name = "id_utilisateur")
     private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "id_budget", nullable = false)
+    private Budget budget;
+
 
 
 }

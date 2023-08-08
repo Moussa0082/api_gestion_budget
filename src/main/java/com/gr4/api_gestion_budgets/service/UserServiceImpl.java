@@ -1,4 +1,4 @@
-package com.gr4.api_gestion_budgets.services;
+package com.gr4.api_gestion_budgets.service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.gr4.api_gestion_budgets.interfacesServices.UserService;
+import com.gr4.api_gestion_budgets.models.Budget;
 import com.gr4.api_gestion_budgets.models.User;
 import com.gr4.api_gestion_budgets.repository.UserRepository;
 
@@ -21,6 +21,7 @@ public class UserServiceImpl implements UserService{
     @Override
     public ResponseEntity<String> addUser(User user) {
         userRepository.save(user);
+        
         return new ResponseEntity<>("Compte créer avec succès", HttpStatus.CREATED);
        
     }
@@ -35,5 +36,10 @@ public class UserServiceImpl implements UserService{
         }
        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.BAD_REQUEST);
     }
+
+    public boolean emailExisteDeja(String email) {
+        return userRepository.existsByEmail(email);
+    }
+    
     
 }

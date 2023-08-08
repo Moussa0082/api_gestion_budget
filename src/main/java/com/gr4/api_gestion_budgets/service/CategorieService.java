@@ -11,9 +11,9 @@ public interface CategorieService {
 
     List<Categorie> lire();
 
-    Categorie modifier(long id, Categorie categorie);
+    Categorie modifier(Integer id, Categorie categorie);
 
-    String supprimer(long id);
+    String supprimer(Integer id);
 
-    Optional<Categorie> findById(Long id);
+    Optional<Categorie> findById(Integer id);
 }

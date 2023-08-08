@@ -24,7 +24,7 @@ public class DepenseController {
     }
     //Lire une depense spécifique
     @GetMapping("/read/{id}")
-    public Optional<Depense> getCustomer(@PathVariable Long id) {
+    public Optional<Depense> getCustomer(@PathVariable Integer id) {
         return depenseService.findById(id);
     }
 

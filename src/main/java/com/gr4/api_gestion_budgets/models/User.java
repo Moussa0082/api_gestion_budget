@@ -1,9 +1,15 @@
 package com.gr4.api_gestion_budgets.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Data
 public class User {
@@ -30,15 +36,17 @@ public class User {
     @Column(nullable = false, length= 100)
     private String profession;
 
-    @Column(nullable = false, length= 100)
+    @Column(unique = true, nullable = false, length= 100)
     private String email;
 
     @Column(nullable = false, length= 50)
     private String password;
-
+    
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id")
+    @JsonIgnore
     private Budget budget;
 
-    //Commentaire
+    //Commentaire*
+   
 }
