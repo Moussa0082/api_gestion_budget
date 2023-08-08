@@ -1,4 +1,4 @@
-package com.gr4.api_gestion_budgets.interfaceService;
+package com.gr4.api_gestion_budgets.service;
 
 import com.gr4.api_gestion_budgets.models.Categorie;
 import com.gr4.api_gestion_budgets.repository.CategorieRepository;
