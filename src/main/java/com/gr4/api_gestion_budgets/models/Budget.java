@@ -45,7 +45,7 @@ public class Budget{
     private List<Alerte> alerte;
 
     @OneToOne
-    @JoinColumn(name = "id_categorie")
+    @JoinColumn(name = "id_categorie", nullable=false)
     private Categorie categorie;
 
     @OneToMany(mappedBy = "budget")
