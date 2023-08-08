@@ -1,4 +1,4 @@
-package com.gr4.api_gestion_budgets.interfacesServices;
+package com.gr4.api_gestion_budgets.service;
 
 import java.util.List;
 

@@ -1,6 +1,7 @@
 package com.gr4.api_gestion_budgets.models;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -9,6 +10,9 @@ import java.util.Date;
 @Entity
 @Data
 public class Depense {
+
+
+  
 
     public enum TypeDepense{
         MENSUEL,
@@ -34,12 +38,15 @@ public class Depense {
     private String description;
 
 
+
     @ManyToOne
     @JoinColumn(name = "id_utilisateur")
+    @JsonIgnore
     private User user;
 
     @ManyToOne
     @JoinColumn(name = "id_budget", nullable = false)
     private Budget budget;
+
 
 }

@@ -8,25 +8,28 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
-@Service
 @AllArgsConstructor
+@Service
 public class DepenseServiceImp implements DepenseService {
 
-    private final DepenseRepository depenseRepository;
+    private  DepenseRepository depensesRepository;
 
     @Override
     public Depense creer(Depense depense) {
-        return depenseRepository.save(depense);
+
+        
+        return depensesRepository.save(depense);
     }
 
     @Override
     public List<Depense> lire() {
-        return depenseRepository.findAll();
+        return depensesRepository.findAll();
     }
 
     @Override
     public Optional<Depense> findById(Integer id) {
-        return depenseRepository.findById(id);
+        return depensesRepository.findById(id);
+
     }
 
 
