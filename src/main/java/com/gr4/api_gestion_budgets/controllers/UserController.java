@@ -31,18 +31,11 @@ public class UserController {
 
     @PostMapping("add")
     public ResponseEntity<String> addQuestion(@RequestBody User user){
-
          String mail = user.getEmail();
          if(userServiceImpl.emailExisteDeja(mail)){
-    
         return new ResponseEntity<>("Cet email existe déjà , essayer un autre email.", HttpStatus.UNAUTHORIZED);
-          
          }
-       
        return userServiceImpl.addUser(user);
-         
-
-        
     }
 
 

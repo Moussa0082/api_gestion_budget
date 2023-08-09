@@ -39,10 +39,6 @@ public class Budget{
     @OneToOne(mappedBy = "budget")
     private User user;
 
-    
-    @OneToMany(mappedBy = "budget")
-    @JsonIgnore
-    private List<Alerte> alerte;
 
     @OneToOne
     @JoinColumn(name = "id_categorie", nullable = false)

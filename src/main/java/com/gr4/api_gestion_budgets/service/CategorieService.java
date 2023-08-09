@@ -1,13 +1,15 @@
 package com.gr4.api_gestion_budgets.service;
 
 import com.gr4.api_gestion_budgets.models.Categorie;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 public interface CategorieService {
 
-    Categorie creer(Categorie categorie);
+    String creer(Categorie categorie);
 
     List<Categorie> lire();
 
@@ -16,4 +18,6 @@ public interface CategorieService {
     String supprimer(Integer id);
 
     Optional<Categorie> findById(Integer id);
+
+
 }

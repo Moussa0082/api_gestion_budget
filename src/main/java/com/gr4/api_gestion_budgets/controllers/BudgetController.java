@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.gr4.api_gestion_budgets.models.Budget;
 import com.gr4.api_gestion_budgets.models.Depense;
 import com.gr4.api_gestion_budgets.repository.BudgetRepository;
-import com.gr4.api_gestion_budgets.service.BudgetService;
 import com.gr4.api_gestion_budgets.service.BudgetServiceImpl;
 
 import io.swagger.v3.oas.annotations.Operation;
