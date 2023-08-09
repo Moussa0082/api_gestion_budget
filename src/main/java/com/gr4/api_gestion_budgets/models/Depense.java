@@ -36,9 +36,7 @@ public class Depense {
     @Column
     private String description;
 
-    // @ManyToOne
-    // @JoinColumn(name = "categorie")
-    // private Categorie categorie;
+   
 
     @ManyToOne
     @JoinColumn(name = "id_utilisateur")

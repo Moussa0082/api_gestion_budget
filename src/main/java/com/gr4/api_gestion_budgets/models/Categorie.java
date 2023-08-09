@@ -22,8 +22,7 @@ public class Categorie {
     @JsonIgnore
     private  Budget budget;
 
-    // @OneToMany(mappedBy = "categorie")
-    // private List<Depense> depense;
+    
 
 
 
