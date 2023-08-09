@@ -16,6 +16,7 @@ public class AlerteServiceImp implements AlerteService {
     @Override
 
     public AlerteRepository message(String message){
+
         return alerteRepository;
     }
         @Autowired

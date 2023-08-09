@@ -6,5 +6,7 @@ import com.gr4.api_gestion_budgets.models.User;
 
 public interface UserRepository extends JpaRepository<User, Integer>{
     
-    User findUserByNom (String nom);
+    User findUserByEmail (String email);
+
+    boolean existsByEmail(String email);
 }

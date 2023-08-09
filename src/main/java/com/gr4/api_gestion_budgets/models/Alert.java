@@ -36,6 +36,7 @@ public class Alert {
     @JoinColumn(name = "categorie")
     private Categorie categorie;
 
+
     //Commentaire
 }
 

@@ -10,6 +10,9 @@ import java.util.Date;
 @Data
 public class Depense {
 
+
+  
+
     public enum TypeDepense{
         MENSUEL,
         QUOTIDIEN,
