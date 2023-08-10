@@ -77,7 +77,7 @@ public class BudgetController {
     }
 
     @PostMapping("/{Id}/addDep")
-    public String creer(@RequestBody Depense depense){
-        return budgetServiceImpl.creerDepense(depense);
+    public String creer(@RequestBody Budget budget, Depense depense){
+        return budgetServiceImpl.creerDepense(budget,depense);
     }
 }

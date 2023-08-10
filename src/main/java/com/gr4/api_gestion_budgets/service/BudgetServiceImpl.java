@@ -105,17 +105,17 @@ public class BudgetServiceImpl implements BudgetService{
     }
 
 
-    public String creerDepense(Depense depense) {
+    public String creerDepense(Budget budget,Depense depense) {
         // Récupérer le budget associé à la dépense
-        Budget budget = budgetRepository.findById(depense.getBudget().getId()).orElse(null);
+        Budget budgets = budgetRepository.findById(budget.getId()).orElse(null);
     
         // Vérifier si le budget existe
-        if (budget == null) {
+        if (budgets == null) {
             return "Budget non trouvé pour l'ID spécifié.";
         }
     
         int montantDepense = depense.getMont_depense();
-        int montantBudget = budget.getMont_bud();
+        int montantBudget = budgets.getMont_bud();
     
         // Vérifier si le montant de la dépense est supérieur au montant du budget
         if (montantDepense > montantBudget) {
@@ -126,8 +126,8 @@ public class BudgetServiceImpl implements BudgetService{
     
             // Mettre à jour le montant restant dans le budget
             int montantRestant = montantBudget - montantDepense;
-            budget.setMont_bud(montantRestant);
-            budgetRepository.save(budget);
+            budgets.setMont_bud(montantRestant);
+            budgetRepository.save(budgets);
     
             // Envoyer un e-mail pour informer de la dépense
             String msg = "Votre budget est de " + budget.getMont_bud() + " Fcfa." +
