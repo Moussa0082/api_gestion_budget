@@ -141,14 +141,14 @@ public class BudgetServiceImpl implements BudgetService{
             budgetRepository.save(budgets);
     
             // Envoyer un e-mail pour informer de la dépense
-            String msg = "Votre budget est de " + budgets.getMont_bud() + " Fcfa." +
-                         "\nPour une dépense de " + depense.getBudget().getCategorie().getNom() +
-                         ". \nMaintenant votre solde principal est de : " + budgets.getMont_bud() + " Fcfa !";
+            String msg = " Vous avez depensez " + depense.getMont_depense() + " Fcfa." +
+                         "\n pour une dépense de " + budgets.getCategorie().getNom() +
+                         ". \n actuellement votre budget est de : " + budgets.getMont_bud() + " Fcfa !";
             EmailDetails details = new EmailDetails(depense.getUser().getEmail(), msg, "Détails de votre dépense");
             emailServiceImpl.sendSimpleMail(details);
     
             // Retourner un message de succès avec le montant restant dans le budget
-            return "Dépense créée avec succès. Montant restant dans le budget : " + montantRestant;
+            return "Dépense créée avec succès. Montant restant dans le budget : " + montantRestant + "votre montant initial était :";
         }
     }
     

@@ -8,5 +8,5 @@ import com.gr4.api_gestion_budgets.models.Budget;
 
 public interface BudgetRepository extends JpaRepository<Budget, Integer>{
     
-    Optional<Budget> findById(Integer idBudget);
+    // Budget findById(Integer id);
 }
