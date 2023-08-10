@@ -1,6 +1,8 @@
 package com.gr4.api_gestion_budgets.service;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -143,18 +145,26 @@ public class BudgetServiceImpl implements BudgetService{
             int montantRestant = montantBudget - montantDepense;
             budgets.setMont_bud(montantRestant);
             budgetRepository.save(budgets);
+
+            // Créer un objet SimpleDateFormat pour formater la date
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+    
+            // Obtenir la date actuelle et la formater
+            Date currentDate = new Date();
+            String formattedDate = dateFormat.format(currentDate);
     
             // Envoyer un e-mail pour informer de la dépense
             String msg = " Vous avez depensez " + depense.getMont_depense() + " Fcfa." +
-                         "\n pour une dépense de " + budgets.getCategorie().getNom() + " le " + depense.getDate_depense() +
-                         "description : " + depense.getDescription() +
-                         ". \n actuellement votre budget est de : " + budgets.getMont_bud() + " Fcfa !" + "votre budget initial était de :" + montantInitialBudget;
-            EmailDetails details = new EmailDetails(depense.getUser().getEmail(), msg, "Alerte depense");
+                         "\n pour une dépense de " + budgets.getCategorie().getNom() + " le  : " + formattedDate +
+                         "  description : " + depense.getDescription() +
+                         ". \n actuellement votre budget est de : " + budgets.getMont_bud() + " Fcfa !" + 
+                         " votre budget initial était de :" + montantInitialBudget;
+            EmailDetails details = new EmailDetails(depense.getUser().getEmail(), msg, " Alerte depense ");
             emailServiceImpl.sendSimpleMail(details);
     
             // Retourner un message de succès avec le montant restant dans le budget
             return "Dépense créée avec succès. Montant restant dans le budget : " + montantRestant + 
-            "votre montant initial était :" + montantInitialBudget + " Fcfa.";
+            " votre montant initial était :" + montantInitialBudget + " Fcfa.";
         }
     }
     
