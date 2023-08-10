@@ -127,6 +127,10 @@ public class BudgetServiceImpl implements BudgetService{
     
         int montantDepense = depense.getMont_depense();
         int montantBudget = budgets.getMont_bud();
+
+            // Sauvegarder le montant initial du budget
+          int montantInitialBudget = montantBudget;
+
     
         // Vérifier si le montant de la dépense est supérieur au montant du budget
         if (montantDepense > montantBudget) {
@@ -142,13 +146,15 @@ public class BudgetServiceImpl implements BudgetService{
     
             // Envoyer un e-mail pour informer de la dépense
             String msg = " Vous avez depensez " + depense.getMont_depense() + " Fcfa." +
-                         "\n pour une dépense de " + budgets.getCategorie().getNom() +
-                         ". \n actuellement votre budget est de : " + budgets.getMont_bud() + " Fcfa !";
-            EmailDetails details = new EmailDetails(depense.getUser().getEmail(), msg, "Détails de votre dépense");
+                         "\n pour une dépense de " + budgets.getCategorie().getNom() + " le " + depense.getDate_depense() +
+                         "description : " + depense.getDescription() +
+                         ". \n actuellement votre budget est de : " + budgets.getMont_bud() + " Fcfa !" + "votre budget initial était de :" + montantInitialBudget;
+            EmailDetails details = new EmailDetails(depense.getUser().getEmail(), msg, "Alerte depense");
             emailServiceImpl.sendSimpleMail(details);
     
             // Retourner un message de succès avec le montant restant dans le budget
-            return "Dépense créée avec succès. Montant restant dans le budget : " + montantRestant + "votre montant initial était :";
+            return "Dépense créée avec succès. Montant restant dans le budget : " + montantRestant + 
+            "votre montant initial était :" + montantInitialBudget + " Fcfa.";
         }
     }
     
