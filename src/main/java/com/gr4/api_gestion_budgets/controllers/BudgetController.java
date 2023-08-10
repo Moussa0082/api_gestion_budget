@@ -63,7 +63,11 @@ public class BudgetController {
         return budgetServiceImpl.getAllBudget();
     }
 
-
+//    @PutMapping("/{Id}/addDepense")
+//    public ResponseEntity<String> addDepenseToBudget(@PathVariable int id, @RequestBody Depense depense) {
+//        Budget updatedBudget = budgetServiceImpl.addDepenseToBudget(id, depense);
+//        return ResponseEntity.ok("Dépense ajoutée avec succès au budget.");
+//    }
     // Endpoint pour ajouter une dépense à un budget
     @PutMapping("/{Id}/addDepense")
     public ResponseEntity<Budget> addDepenseToBudget(@PathVariable int Id, @RequestBody Depense depense) {
