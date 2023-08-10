@@ -1,5 +1,6 @@
 package com.gr4.api_gestion_budgets.service;
 
+import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -79,49 +80,56 @@ public class BudgetServiceImpl implements BudgetService{
    
 
    // Méthode pour ajouter une dépense à un budget donné
-    public Budget addDepenseToBudget(int Id, Depense depense, Budget budget) {
-        Budget existingBudget = budgetRepository.findById(Id).orElse(null);
+    // public Budget addDepenseToBudget(int Id, Depense depense, Budget budget) {
+    //     Budget existingBudget = budgetRepository.findById(Id).orElse(null);
 
-        if (existingBudget != null) {
-            int montantDepense = depense.getMont_depense();
-            int nouveauMontantTotal = existingBudget.getMont_bud() - montantDepense;
+    //     if (existingBudget != null) {
+    //         int montantDepense = depense.getMont_depense();
+    //         int nouveauMontantTotal = existingBudget.getMont_bud() - montantDepense;
 
-            // Vérifier que le montant total ne devient pas négatif
-            if (nouveauMontantTotal >= 0) {
-                existingBudget.setMont_bud(nouveauMontantTotal);
+    //         // Vérifier que le montant total ne devient pas négatif
+    //         if (nouveauMontantTotal >= 0) {
+    //             existingBudget.setMont_bud(nouveauMontantTotal);
 
-                // Enregistrer la modification du budget dans la base de données
-                budgetRepository.save(existingBudget);
+    //             // Enregistrer la modification du budget dans la base de données
+    //             budgetRepository.save(existingBudget);
 
-                // Définir la relation entre la dépense et le budget
-                depense.setBudget(existingBudget);
-                depenseRepository.save(depense);
+    //             // Définir la relation entre la dépense et le budget
+    //             depense.setBudget(existingBudget);
+    //             depenseRepository.save(depense);
 
-                String msg = "Votre budget est de " + budget.getMont_bud() + " Fcfa." +
-                         "\nPour une dépense de " + depense.getBudget().getCategorie().getNom() +
-                         ". \nMaintenant votre solde principal est de : " + budget.getMont_bud() + " Fcfa !";
-            EmailDetails details = new EmailDetails(depense.getUser().getEmail(), msg, "Détails de votre dépense");
-            emailServiceImpl.sendSimpleMail(details);
+    //             String msg = "Votre budget est de " + budget.getMont_bud() + " Fcfa." +
+    //                      "\nPour une dépense de " + depense.getBudget().getCategorie().getNom() +
+    //                      ". \nMaintenant votre solde principal est de : " + budget.getMont_bud() + " Fcfa !";
+    //         EmailDetails details = new EmailDetails(budget.getUser().getEmail(), msg, "Détails de votre dépense");
+    //         emailServiceImpl.sendSimpleMail(details);
 
-                return existingBudget;
-            } else {
-                throw new IllegalArgumentException("Montant de la dépense trop élevé pour le budget actuel.");
-            }
-        } else {
-            throw new IllegalArgumentException("Budget non trouvé avec l'ID spécifié.");
-        }
-    }
-
-
+    //             return existingBudget;
+    //         } else {
+    //             throw new IllegalArgumentException("Montant de la dépense trop élevé pour le budget actuel.");
+    //         }
+    //     } else {
+    //         throw new IllegalArgumentException("Budget non trouvé avec l'ID spécifié.");
+    //     }
+    // }
 
 
 
     public String creerDepense(Depense depense) {
         // Récupérer le budget associé à la dépense
-
+   SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+    
+   // Créer un objet SimpleDateFormat pour formater la date
+            // Obtenir la date actuelle et la formater
+            Date currentDate = new Date();
+            long currentTimDate = currentDate.getTime();
+            String actualTime = dateFormat.format(currentTimDate);
+            String formattedDate = dateFormat.format(currentDate);
         // Integer idb = budget.getId();
        Budget budgets = budgetRepository.findById(depense.getBudget().getId()).orElse(null);
     
+       
+
         // Vérifier si le budget existe
         if (budgets == null) {
             return "Budget non trouvé pour l'ID spécifié.";
@@ -133,11 +141,26 @@ public class BudgetServiceImpl implements BudgetService{
             // Sauvegarder le montant initial du budget
           int montantInitialBudget = montantBudget;
 
-    
+          int mt_al = budgets.getMont_dalerte();
         // Vérifier si le montant de la dépense est supérieur au montant du budget
         if (montantDepense > montantBudget) {
             return "Le montant de la dépense ne doit pas dépasser celui du budget.";
-        } else {
+        } else if(montantBudget>mt_al*20/100){
+
+
+        //  message d'alerte quand le user atteind presque le montant d'alerte 
+         String msg = " Votre budget est " + budgets.getMont_bud() + " Fcfa !" + " rappelez - vous \n votre montant d'alerte est : "+ budgets.getMont_dalerte()+
+                        " votre budget\n après la dernière depense est de :"
+                         + montantInitialBudget + " FCFA ";
+             //objet de la classe emaildetails pour envoyer l'email à l'utilisateur
+            EmailDetails details = new EmailDetails
+            (depense.getUser().getEmail(), msg, " Alerte ");
+            //Envoi de l'email avec la methode sendSimpleMail implementer dans emailServiceImpl
+            emailServiceImpl.sendSimpleMail(details);
+            return "Alerte , votre montant d'alerte est " + budgets.getMont_dalerte() + 
+            " veuillez essayer de ne pas depasser votre montant d'alerte" ;
+        }
+        else {
             // Enregistrer la dépense dans la base de données
             depenseRepository.save(depense);
     
@@ -145,31 +168,37 @@ public class BudgetServiceImpl implements BudgetService{
             int montantRestant = montantBudget - montantDepense;
             budgets.setMont_bud(montantRestant);
             budgetRepository.save(budgets);
-
-            // Créer un objet SimpleDateFormat pour formater la date
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-    
-            // Obtenir la date actuelle et la formater
-            Date currentDate = new Date();
-            String formattedDate = dateFormat.format(currentDate);
+            
     
             // Envoyer un e-mail pour informer de la dépense
             String msg = " Vous avez depensez " + depense.getMont_depense() + " Fcfa." +
-                         "\n pour une dépense de " + budgets.getCategorie().getNom() + " le  : " + formattedDate +
+                         "\n pour une dépense de " + budgets.getCategorie().getNom()
+                          + " le  : " + formattedDate +
+                          " à "+ actualTime +
                          "  description : " + depense.getDescription() +
-                         ". \n actuellement votre budget est de : " + budgets.getMont_bud() + " Fcfa !" + 
-                         " votre budget initial était de :" + montantInitialBudget;
-            EmailDetails details = new EmailDetails(depense.getUser().getEmail(), msg, " Alerte depense ");
+                         ". \n actuellement votre budget est de : " 
+                         + budgets.getMont_bud() + " Fcfa !" + 
+                         " votre budget de la dernière depense était de :"
+                          + montantInitialBudget;
+            EmailDetails details = new EmailDetails
+            (depense.getUser().getEmail(), msg, " Alerte depense ");
             emailServiceImpl.sendSimpleMail(details);
     
             // Retourner un message de succès avec le montant restant dans le budget
             return "Dépense créée avec succès. Montant restant dans le budget : " + montantRestant + 
-            " votre montant initial était :" + montantInitialBudget + " Fcfa.";
+            " votre montant de la dernière depense était de : " + montantInitialBudget + " Fcfa.";
+
+        
         }
+        
+       
     }
-    
+        
+}
+
+
 
     
-}
+
     
 
