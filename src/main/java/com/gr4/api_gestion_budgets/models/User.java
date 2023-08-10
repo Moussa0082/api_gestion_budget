@@ -41,8 +41,7 @@ public class User {
     @Column(nullable = false, length= 50)
     private String password;
     
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "idBudget")
+    @OneToOne(mappedBy = "user")
     @JsonIgnore
     private Budget budget;
 }

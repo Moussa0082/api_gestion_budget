@@ -1,5 +1,7 @@
 package com.gr4.api_gestion_budgets.service;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -86,9 +88,20 @@ public class BudgetServiceImpl implements BudgetService {
         if (budgets == null) {
             return "Budget non trouvé pour l'ID spécifié.";
         }
+        // Utiliser LocalDate pour les dates
+        LocalDate date_depense = depense.getDate_depense().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        LocalDate date_debut = budgets.getDate_debut().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        LocalDate date_fin = budgets.getDate_fin().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+        if (date_depense.isBefore(date_debut) || date_depense.isAfter(date_fin)) {
+            return "La date de dépense doit être comprise entre " + date_debut + " et " + date_fin + " du budget.";
+        }
 
         int montantDepense = depense.getMont_depense();
         int montantBudget = budgets.getMont_bud();
+
+            // Sauvegarder le montant initial du budget
+          int montantInitialBudget = montantBudget;
 
         // Vérifier si le montant de la dépense est supérieur au montant du budget
         if (montantDepense > montantBudget) {
@@ -103,14 +116,18 @@ public class BudgetServiceImpl implements BudgetService {
             budgetRepository.save(budgets);
 
             // Envoyer un e-mail pour informer de la dépense
-            String msg = "Votre budget est de " + budgets.getMont_bud() + " Fcfa." +
-                    "\nPour une dépense de " + depense.getBudget().getCategorie().getNom() +
-                    ". \nMaintenant votre solde principal est de : " + budgets.getMont_bud() + " Fcfa !";
-            EmailDetails details = new EmailDetails(depense.getUser().getEmail(), msg, "Détails de votre dépense");
+
+            String msg = " Vous avez depensez " + depense.getMont_depense() + " Fcfa." +
+                         "\n pour une dépense de " + budgets.getCategorie().getNom() + " le " + depense.getDate_depense() +
+                         "description : " + depense.getDescription() +
+                         ". \n actuellement votre budget est de : " + budgets.getMont_bud() + " Fcfa !" + "votre budget initial était de :" + montantInitialBudget;
+            EmailDetails details = new EmailDetails(budgets.getUser().getEmail(), msg, "Alerte depense");
+
             emailServiceImpl.sendSimpleMail(details);
 
             // Retourner un message de succès avec le montant restant dans le budget
-            return "Dépense créée avec succès. Montant restant dans le budget : " + montantRestant;
+            return "Dépense créée avec succès. Montant restant dans le budget : " + montantRestant + 
+            "votre montant initial était :" + montantInitialBudget + " Fcfa.";
         }
     }
 }

@@ -32,7 +32,6 @@ public class BudgetController {
     @Autowired
     BudgetRepository budgetRepository;
 
-   
     public BudgetController(BudgetServiceImpl budgetServiceImpl) {
         this.budgetServiceImpl = budgetServiceImpl;
     }
@@ -45,8 +44,6 @@ public class BudgetController {
         // return new ResponseEntity<>("Budget Créer avec succès avec un montant de  " + br.getMont_bud() , HttpStatus.OK);
 
     }
-
-    
     @Operation(summary = "Mettre à jour un budget existant")
    @PutMapping("/update/{id}")
     public Budget Update(@PathVariable Integer id, @RequestBody Budget budget){
@@ -54,9 +51,6 @@ public class BudgetController {
         return budgetServiceImpl.modifier(id, budget);
     }
 
-
-
-    
     @Operation(summary = "Afficher la liste des budgets existants")
     @GetMapping("/all")
     public ResponseEntity<List<Budget>> getAllBudget() {
@@ -64,19 +58,7 @@ public class BudgetController {
         return budgetServiceImpl.getAllBudget();
     }
 
-    // Endpoint pour ajouter une dépense à un budget
-    @PutMapping("/{Id}/addDepense")
-    public ResponseEntity<Budget> addDepenseToBudget(@PathVariable int Id, @RequestBody Depense depense, Budget budget) {
-        try {
-            Budget updatedBudget = budgetServiceImpl.addDepenseToBudget(Id, depense, budget);
-            return new ResponseEntity<>(updatedBudget, HttpStatus.CREATED);
-        } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
+    @Operation(summary = "Faire une depense")
     @PutMapping("/{Id}/addDep")
     public String creer(@RequestBody Depense depense){
         return budgetServiceImpl.creerDepense(depense);

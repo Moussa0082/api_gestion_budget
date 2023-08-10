@@ -8,9 +8,9 @@ import java.util.Optional;
 
 public interface DepenseService {
 
-
-
     List<Depense> lire();
+
+    void supprimer(Integer id);
 
     Optional<Depense> findById(Integer id);
 }

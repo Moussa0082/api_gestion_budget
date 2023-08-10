@@ -2,6 +2,7 @@ package com.gr4.api_gestion_budgets.controllers;
 
 import java.util.List;
 
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +29,7 @@ public class UserController {
     public UserController(UserRepository userRepository){
         this.userRepository= userRepository;
     }
-
+    @Operation(summary = "Ajouter un utilisateur")
     @PostMapping("add")
     public ResponseEntity<String> addQuestion(@RequestBody User user){
          String mail = user.getEmail();

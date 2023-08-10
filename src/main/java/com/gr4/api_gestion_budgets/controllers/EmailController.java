@@ -1,5 +1,6 @@
 package com.gr4.api_gestion_budgets.controllers;
 
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,7 +16,7 @@ public class EmailController {
 
      @Autowired private EmailService emailService;
  
-    // Sending a simple Email
+    @Operation(summary = "Envoyer un mail")
     @PostMapping("/sendMail")
     public String
     sendMail(@RequestBody EmailDetails details)
