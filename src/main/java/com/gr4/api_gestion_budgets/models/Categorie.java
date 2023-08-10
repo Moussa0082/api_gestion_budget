@@ -16,7 +16,7 @@ public class Categorie {
     private int id;
 
     @Column(nullable= false)
-    private String nom_cat;
+    private String nom;
 
     @OneToOne(mappedBy = "categorie")
     @JsonIgnore

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.gr4.api_gestion_budgets.models.Budget;
 import com.gr4.api_gestion_budgets.models.Depense;
+import com.gr4.api_gestion_budgets.models.EmailDetails;
 import com.gr4.api_gestion_budgets.repository.BudgetRepository;
 import com.gr4.api_gestion_budgets.repository.DepenseRepository;
 
@@ -21,6 +22,9 @@ public class BudgetServiceImpl implements BudgetService{
 
     @Autowired
     private DepenseRepository depenseRepository;
+
+    @Autowired
+    private EmailServiceImpl emailServiceImpl;
 
     
     public BudgetServiceImpl(BudgetRepository budgetRepository, DepenseRepository depenseRepository) {
@@ -101,7 +105,42 @@ public class BudgetServiceImpl implements BudgetService{
     }
 
 
-
+    public String creerDepense(Depense depense) {
+        // Récupérer le budget associé à la dépense
+        Budget budget = budgetRepository.findById(depense.getBudget().getId()).orElse(null);
+    
+        // Vérifier si le budget existe
+        if (budget == null) {
+            return "Budget non trouvé pour l'ID spécifié.";
+        }
+    
+        int montantDepense = depense.getMont_depense();
+        int montantBudget = budget.getMont_bud();
+    
+        // Vérifier si le montant de la dépense est supérieur au montant du budget
+        if (montantDepense > montantBudget) {
+            return "Le montant de la dépense ne doit pas dépasser celui du budget.";
+        } else {
+            // Enregistrer la dépense dans la base de données
+            depenseRepository.save(depense);
+    
+            // Mettre à jour le montant restant dans le budget
+            int montantRestant = montantBudget - montantDepense;
+            budget.setMont_bud(montantRestant);
+            budgetRepository.save(budget);
+    
+            // Envoyer un e-mail pour informer de la dépense
+            String msg = "Votre budget est de " + budget.getMont_bud() + " Fcfa." +
+                         "\nPour une dépense de " + depense.getBudget().getCategorie().getNom() +
+                         ". \nMaintenant votre solde principal est de : " + budget.getMont_bud() + " Fcfa !";
+            EmailDetails details = new EmailDetails(depense.getUser().getEmail(), msg, "Détails de votre dépense");
+            emailServiceImpl.sendSimpleMail(details);
+    
+            // Retourner un message de succès avec le montant restant dans le budget
+            return "Dépense créée avec succès. Montant restant dans le budget : " + montantRestant;
+        }
+    }
+    
 
     
 }

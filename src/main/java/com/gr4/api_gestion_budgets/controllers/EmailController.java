@@ -25,6 +25,5 @@ public class EmailController {
  
         return status;
     }
-    //mail
     
 }

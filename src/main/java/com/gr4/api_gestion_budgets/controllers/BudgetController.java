@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.gr4.api_gestion_budgets.models.Budget;
 import com.gr4.api_gestion_budgets.models.Depense;
 import com.gr4.api_gestion_budgets.repository.BudgetRepository;
-import com.gr4.api_gestion_budgets.service.BudgetService;
 import com.gr4.api_gestion_budgets.service.BudgetServiceImpl;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -44,6 +43,7 @@ public class BudgetController {
         // return new ResponseEntity<>("Budget Créer avec succès avec un montant de  " + br.getMont_bud() , HttpStatus.OK);
 
     }
+
     
     @Operation(summary = "Mettre à jour un budget existant")
    @PutMapping("/update/{id}")
@@ -76,4 +76,8 @@ public class BudgetController {
         }
     }
 
+    @PostMapping("/{Id}/addDep")
+    public String creer(@RequestBody Depense depense){
+        return budgetServiceImpl.creerDepense(depense);
+    }
 }

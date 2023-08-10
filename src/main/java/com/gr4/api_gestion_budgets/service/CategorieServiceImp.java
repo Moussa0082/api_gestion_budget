@@ -28,7 +28,7 @@ public class CategorieServiceImp implements CategorieService {
     public Categorie modifier(Integer id, Categorie categorie) {
         return categorieRepository.findById(id)
                 .map(ca -> {
-                    ca.setNom_cat(categorie.getNom_cat());
+                    ca.setNom(categorie.getNom());
                     return categorieRepository.save(ca);
                 }).orElseThrow(() -> new RuntimeException(("Categorie non trouvé")));
     }

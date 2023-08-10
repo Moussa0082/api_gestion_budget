@@ -47,6 +47,14 @@ public class User {
     @JsonIgnore
     private Budget budget;
 
- 
-   
+ /* 
+    private String email;
+
+    private String mesage;
+
+    private String sujet;
+
+    
+    
+    */
 }
