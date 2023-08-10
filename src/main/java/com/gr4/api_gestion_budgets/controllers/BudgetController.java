@@ -20,12 +20,13 @@ import com.gr4.api_gestion_budgets.service.BudgetServiceImpl;
 
 import io.swagger.v3.oas.annotations.Operation;
 
+
 @RestController
 @RequestMapping("/budget")
 public class BudgetController {
 
     @Autowired
-    private BudgetServiceImpl budgetServiceImpl;
+    BudgetServiceImpl budgetServiceImpl;
 
     @Autowired
     BudgetRepository budgetRepository;
@@ -65,9 +66,9 @@ public class BudgetController {
 
     // Endpoint pour ajouter une dépense à un budget
     @PutMapping("/{Id}/addDepense")
-    public ResponseEntity<Budget> addDepenseToBudget(@PathVariable int Id, @RequestBody Depense depense) {
+    public ResponseEntity<Budget> addDepenseToBudget(@PathVariable int Id, @RequestBody Depense depense, Budget budget) {
         try {
-            Budget updatedBudget = budgetServiceImpl.addDepenseToBudget(Id, depense);
+            Budget updatedBudget = budgetServiceImpl.addDepenseToBudget(Id, depense, budget);
             return new ResponseEntity<>(updatedBudget, HttpStatus.CREATED);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -76,8 +77,8 @@ public class BudgetController {
         }
     }
 
-    @PostMapping("/{Id}/addDep")
-    public String creer(@RequestBody Budget budget, Depense depense){
-        return budgetServiceImpl.creerDepense(budget,depense);
+    @PutMapping("/{Id}/addDep")
+    public String creer(@RequestBody Depense depense){
+        return budgetServiceImpl.creerDepense(depense);
     }
 }

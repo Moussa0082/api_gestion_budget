@@ -19,7 +19,7 @@ public class Budget{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false)
-    private int id;
+    private Integer id;
 
 
     @Column(nullable = false)

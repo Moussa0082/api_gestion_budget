@@ -18,13 +18,13 @@ import com.gr4.api_gestion_budgets.repository.DepenseRepository;
 public class BudgetServiceImpl implements BudgetService{
 
     @Autowired
-    private BudgetRepository budgetRepository;
+    BudgetRepository budgetRepository;
 
     @Autowired
-    private DepenseRepository depenseRepository;
+    DepenseRepository depenseRepository;
 
     @Autowired
-    private EmailServiceImpl emailServiceImpl;
+    EmailServiceImpl emailServiceImpl;
 
     
     public BudgetServiceImpl(BudgetRepository budgetRepository, DepenseRepository depenseRepository) {
@@ -77,7 +77,7 @@ public class BudgetServiceImpl implements BudgetService{
    
 
    // Méthode pour ajouter une dépense à un budget donné
-    public Budget addDepenseToBudget(int Id, Depense depense) {
+    public Budget addDepenseToBudget(int Id, Depense depense, Budget budget) {
         Budget existingBudget = budgetRepository.findById(Id).orElse(null);
 
         if (existingBudget != null) {
@@ -95,6 +95,12 @@ public class BudgetServiceImpl implements BudgetService{
                 depense.setBudget(existingBudget);
                 depenseRepository.save(depense);
 
+                String msg = "Votre budget est de " + budget.getMont_bud() + " Fcfa." +
+                         "\nPour une dépense de " + depense.getBudget().getCategorie().getNom() +
+                         ". \nMaintenant votre solde principal est de : " + budget.getMont_bud() + " Fcfa !";
+            EmailDetails details = new EmailDetails(depense.getUser().getEmail(), msg, "Détails de votre dépense");
+            emailServiceImpl.sendSimpleMail(details);
+
                 return existingBudget;
             } else {
                 throw new IllegalArgumentException("Montant de la dépense trop élevé pour le budget actuel.");
@@ -105,9 +111,14 @@ public class BudgetServiceImpl implements BudgetService{
     }
 
 
-    public String creerDepense(Budget budget,Depense depense) {
+
+
+
+    public String creerDepense(Depense depense) {
         // Récupérer le budget associé à la dépense
-        Budget budgets = budgetRepository.findById(budget.getId()).orElse(null);
+
+        // Integer idb = budget.getId();
+       Budget budgets = budgetRepository.findById(depense.getBudget().getId()).orElse(null);
     
         // Vérifier si le budget existe
         if (budgets == null) {
@@ -130,9 +141,9 @@ public class BudgetServiceImpl implements BudgetService{
             budgetRepository.save(budgets);
     
             // Envoyer un e-mail pour informer de la dépense
-            String msg = "Votre budget est de " + budget.getMont_bud() + " Fcfa." +
+            String msg = "Votre budget est de " + budgets.getMont_bud() + " Fcfa." +
                          "\nPour une dépense de " + depense.getBudget().getCategorie().getNom() +
-                         ". \nMaintenant votre solde principal est de : " + budget.getMont_bud() + " Fcfa !";
+                         ". \nMaintenant votre solde principal est de : " + budgets.getMont_bud() + " Fcfa !";
             EmailDetails details = new EmailDetails(depense.getUser().getEmail(), msg, "Détails de votre dépense");
             emailServiceImpl.sendSimpleMail(details);
     
