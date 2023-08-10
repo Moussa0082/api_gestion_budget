@@ -21,12 +21,13 @@ import com.gr4.api_gestion_budgets.service.BudgetServiceImpl;
 
 import io.swagger.v3.oas.annotations.Operation;
 
+
 @RestController
 @RequestMapping("/budget")
 public class BudgetController {
 
     @Autowired
-    private BudgetServiceImpl budgetServiceImpl;
+    BudgetServiceImpl budgetServiceImpl;
 
     @Autowired
     BudgetRepository budgetRepository;
@@ -63,16 +64,11 @@ public class BudgetController {
         return budgetServiceImpl.getAllBudget();
     }
 
-//    @PutMapping("/{Id}/addDepense")
-//    public ResponseEntity<String> addDepenseToBudget(@PathVariable int id, @RequestBody Depense depense) {
-//        Budget updatedBudget = budgetServiceImpl.addDepenseToBudget(id, depense);
-//        return ResponseEntity.ok("Dépense ajoutée avec succès au budget.");
-//    }
     // Endpoint pour ajouter une dépense à un budget
     @PutMapping("/{Id}/addDepense")
-    public ResponseEntity<Budget> addDepenseToBudget(@PathVariable int Id, @RequestBody Depense depense) {
+    public ResponseEntity<Budget> addDepenseToBudget(@PathVariable int Id, @RequestBody Depense depense, Budget budget) {
         try {
-            Budget updatedBudget = budgetServiceImpl.addDepenseToBudget(Id, depense);
+            Budget updatedBudget = budgetServiceImpl.addDepenseToBudget(Id, depense, budget);
             return new ResponseEntity<>(updatedBudget, HttpStatus.CREATED);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -81,4 +77,8 @@ public class BudgetController {
         }
     }
 
+    @PutMapping("/{Id}/addDep")
+    public String creer(@RequestBody Depense depense){
+        return budgetServiceImpl.creerDepense(depense);
+    }
 }

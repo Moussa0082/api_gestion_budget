@@ -27,7 +27,7 @@ public class Depense {
     @Column
     private TypeDepense typeDepense;
 
-    @Column
+    @Column(nullable = false)
     private Integer mont_depense;
 
     @JsonFormat(pattern = "yyyy-MM-dd")

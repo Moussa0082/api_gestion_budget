@@ -8,7 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.gr4.api_gestion_budgets.models.Budget;
 import com.gr4.api_gestion_budgets.models.User;
 import com.gr4.api_gestion_budgets.repository.UserRepository;
 

@@ -18,10 +18,11 @@ public class Budget{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    @Column(nullable = false)
+    private Integer id;
 
 
-    @Column
+    @Column(nullable = false)
     private Integer mont_bud;
 
     @JsonFormat(pattern = "yyyy-MM-dd")

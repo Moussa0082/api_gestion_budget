@@ -42,8 +42,7 @@ public class User {
     private String password;
     
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "idBudget")
     @JsonIgnore
     private Budget budget;
-
 }
