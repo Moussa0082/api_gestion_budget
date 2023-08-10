@@ -4,6 +4,7 @@ package com.gr4.api_gestion_budgets.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 
@@ -16,6 +17,7 @@ public class Categorie {
     private int id;
 
     @Column(nullable= false)
+    @NotBlank(message = "le nom ne doit pas etre vide")
     private String nom_cat;
 
     @OneToOne(mappedBy = "categorie")

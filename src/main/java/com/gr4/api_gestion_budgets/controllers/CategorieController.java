@@ -2,6 +2,7 @@ package com.gr4.api_gestion_budgets.controllers;
 
 import com.gr4.api_gestion_budgets.models.Categorie;
 import com.gr4.api_gestion_budgets.service.CategorieService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,7 +17,7 @@ public class CategorieController {
 
     //Créer une categorie
     @PostMapping("/create")
-    public Categorie create(@RequestBody Categorie categorie){
+    public Categorie create(@Valid @RequestBody Categorie categorie){
         return categorieService.creer(categorie);
     }
     //Afficher les categories

@@ -6,6 +6,8 @@ import com.gr4.api_gestion_budgets.models.Depense;
 import com.gr4.api_gestion_budgets.service.DepenseService;
 import lombok.AllArgsConstructor;
 import org.apache.catalina.LifecycleState;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -33,4 +35,6 @@ public class DepenseController {
     public List<Depense> read(){
         return  depenseService.lire();
     }
+
+    
 }
