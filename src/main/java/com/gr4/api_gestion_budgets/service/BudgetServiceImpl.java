@@ -40,6 +40,9 @@ public class BudgetServiceImpl implements BudgetService {
         if (!checkBudgetDuration(budget)) {
             return new ResponseEntity<>("La durée entre date_debut et date_fin ne doit pas dépasser un mois.", HttpStatus.BAD_REQUEST);
         }
+        if (!checkBudgetYear(budget)) {
+            return new ResponseEntity<>("Les dates doivent être dans l'année en cours.", HttpStatus.BAD_REQUEST);
+        }
         budgetRepository.save(budget);
         return new ResponseEntity<>("Budget créé avec succès", HttpStatus.CREATED);
     }
@@ -135,6 +138,18 @@ public class BudgetServiceImpl implements BudgetService {
             return "Dépense créée avec succès. Montant restant dans le budget : " + montantRestant + 
             "votre montant initial était :" + montantInitialBudget + " Fcfa.";
         }
+    }
+    //Vérifier si la date du budget est définie dans une année en cours
+    public boolean checkBudgetYear(Budget budget) {
+        LocalDate date_debut = budget.getDate_debut().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        LocalDate date_fin = budget.getDate_fin().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        LocalDate currentDate = LocalDate.now();
+
+        int currentYear = currentDate.getYear();
+        int debutYear = date_debut.getYear();
+        int finYear = date_fin.getYear();
+
+        return debutYear == currentYear && finYear == currentYear;
     }
 }
     
