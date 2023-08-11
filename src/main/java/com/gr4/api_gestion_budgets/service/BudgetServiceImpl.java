@@ -89,8 +89,6 @@ public class BudgetServiceImpl implements BudgetService {
 
     public String creerDepense(Depense depense) {
         // Récupérer le budget associé à la dépense
-
-        // Integer idb = budget.getId();
         Budget budgets = budgetRepository.findById(depense.getBudget().getId()).orElse(null);
 
         // Vérifier si le budget existe

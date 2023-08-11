@@ -4,9 +4,11 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
 import jakarta.persistence.*;
+import lombok.Data;
 
 
 @Entity
+@Data
 public class Categorie {
  
     @Id
@@ -20,36 +22,5 @@ public class Categorie {
     @JsonIgnore
     private  Budget budget;
 
-    public Categorie() {
-    }
 
-    public Categorie(int id, String nom, Budget budget) {
-        this.id = id;
-        this.nom = nom;
-        this.budget = budget;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getNom() {
-        return nom;
-    }
-
-    public void setNom(String nom) {
-        this.nom = nom;
-    }
-
-    public Budget getBudget() {
-        return budget;
-    }
-
-    public void setBudget(Budget budget) {
-        this.budget = budget;
-    }
 }
