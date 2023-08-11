@@ -37,7 +37,7 @@ public class Budget{
     private Integer mont_dalerte;
 
     
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "id_user")
     private User user;
 

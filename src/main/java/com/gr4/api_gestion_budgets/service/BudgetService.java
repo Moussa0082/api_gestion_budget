@@ -19,4 +19,7 @@ public interface BudgetService{
 
 
     ResponseEntity<String> supprimerBudget(Integer id, Budget budget);
+
+    //Méthode pour définir la durée du budget sur un mois
+    boolean checkBudgetDuration(Budget budget);
 }

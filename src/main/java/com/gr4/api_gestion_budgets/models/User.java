@@ -7,6 +7,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -41,7 +43,7 @@ public class User {
     @Column(nullable = false, length= 50)
     private String password;
     
-    @OneToOne(mappedBy = "user")
+    @OneToMany(mappedBy = "user")
     @JsonIgnore
-    private Budget budget;
+    private List<Budget> budget;
 }

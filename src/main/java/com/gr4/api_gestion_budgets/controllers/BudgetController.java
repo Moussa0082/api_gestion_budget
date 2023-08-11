@@ -2,9 +2,8 @@ package com.gr4.api_gestion_budgets.controllers;
 
 import java.util.List;
 
-import com.gr4.api_gestion_budgets.models.User;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -38,11 +37,8 @@ public class BudgetController {
      
     @Operation(summary = "Ajouter un budget")
     @PostMapping("add")
-    ResponseEntity<String> addBudget(@RequestBody Budget budget){
-        // Budget br = budgetRepository.findBudgetById(null);
-       return budgetServiceImpl.addBudget(budget);
-        // return new ResponseEntity<>("Budget Créer avec succès avec un montant de  " + br.getMont_bud() , HttpStatus.OK);
-
+    public ResponseEntity<String> addBudget(@RequestBody Budget budget) {
+        return budgetServiceImpl.addBudget(budget);
     }
     @Operation(summary = "Mettre à jour un budget existant")
    @PutMapping("/update/{id}")

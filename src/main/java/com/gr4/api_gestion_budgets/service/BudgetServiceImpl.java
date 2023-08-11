@@ -5,12 +5,9 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.gr4.api_gestion_budgets.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import com.gr4.api_gestion_budgets.models.Budget;
@@ -40,10 +37,11 @@ public class BudgetServiceImpl implements BudgetService {
 
     @Override
     public ResponseEntity<String> addBudget(Budget budget) {
-
+        if (!checkBudgetDuration(budget)) {
+            return new ResponseEntity<>("La durée entre date_debut et date_fin ne doit pas dépasser un mois.", HttpStatus.BAD_REQUEST);
+        }
         budgetRepository.save(budget);
-        return new ResponseEntity<>("Budget créer avec succèss", HttpStatus.CREATED);
-
+        return new ResponseEntity<>("Budget créé avec succès", HttpStatus.CREATED);
     }
 
 
@@ -72,9 +70,17 @@ public class BudgetServiceImpl implements BudgetService {
 
     @Override
     public ResponseEntity<String> supprimerBudget(Integer id, Budget budget) {
-
         budgetRepository.deleteById(id);
         return new ResponseEntity<>("supprimer avec succès", HttpStatus.OK);
+    }
+
+    //Méthode pour définir la date sur un mois
+    @Override
+    public boolean checkBudgetDuration(Budget budget) {
+        LocalDate date_debut = budget.getDate_debut().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        LocalDate date_fin = budget.getDate_fin().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+        return date_debut.plusMonths(1).isAfter(date_fin) || date_debut.plusMonths(1).isEqual(date_fin);
     }
 
 
