@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.gr4.api_gestion_budgets.models.Budget;
 import com.gr4.api_gestion_budgets.models.Depense;
 import com.gr4.api_gestion_budgets.repository.BudgetRepository;
+import com.gr4.api_gestion_budgets.service.AlerteService;
 import com.gr4.api_gestion_budgets.service.BudgetServiceImpl;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -24,6 +25,9 @@ import io.swagger.v3.oas.annotations.Operation;
 @RestController
 @RequestMapping("/budget")
 public class BudgetController {
+
+    @Autowired
+    private AlerteService alerteService;
 
     @Autowired
     BudgetServiceImpl budgetServiceImpl;
@@ -65,20 +69,22 @@ public class BudgetController {
 
 
     // Endpoint pour ajouter une dépense à un budget
-    @PutMapping("/{Id}/addDepense")
-    public ResponseEntity<Budget> addDepenseToBudget(@PathVariable int Id, @RequestBody Depense depense, Budget budget) {
-        try {
-            Budget updatedBudget = budgetServiceImpl.addDepenseToBudget(Id, depense, budget);
-            return new ResponseEntity<>(updatedBudget, HttpStatus.CREATED);
-        } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
+    // @PutMapping("/{Id}/addDepense")
+    // public ResponseEntity<Budget> addDepenseToBudget(@PathVariable int Id, @RequestBody Depense depense, Budget budget) {
+    //     try {
+    //         Budget updatedBudget = budgetServiceImpl.addDepenseToBudget(Id, depense, budget);
+    //         return new ResponseEntity<>(updatedBudget, HttpStatus.CREATED);
+    //     } catch (IllegalArgumentException e) {
+    //         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    //     } catch (Exception e) {
+    //         return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    //     }
+    // }
 
     @PutMapping("/{Id}/addDep")
     public String creer(@RequestBody Depense depense){
         return budgetServiceImpl.creerDepense(depense);
     }
+
+    
 }

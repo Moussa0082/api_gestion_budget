@@ -1,5 +1,7 @@
 package com.gr4.api_gestion_budgets.models;
 
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -42,19 +44,11 @@ public class User {
     @Column(nullable = false, length= 50)
     private String password;
     
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "idBudget")
-    @JsonIgnore
-    private Budget budget;
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<Budget> budget;
+     
 
- /* 
-    private String email;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Alerte> alertes;
 
-    private String mesage;
-
-    private String sujet;
-
-    
-    
-    */
 }

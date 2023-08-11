@@ -1,6 +1,8 @@
 package com.gr4.api_gestion_budgets.models;
 
 
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.*;
@@ -18,9 +20,8 @@ public class Categorie {
     @Column(nullable= false)
     private String nom;
 
-    @OneToOne(mappedBy = "categorie")
-    @JsonIgnore
-    private  Budget budget;
+    @OneToMany(mappedBy = "categorie" ,cascade = CascadeType.ALL)
+    private  List<Budget> budget;
 
     
 

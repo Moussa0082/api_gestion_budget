@@ -17,6 +17,11 @@ public class UserServiceImpl implements UserService{
     @Autowired
     private UserRepository userRepository;
 
+    
+    public User getUserById(int userId) {
+        return userRepository.findById(userId).orElse(null);
+    }
+
     @Override
     public ResponseEntity<String> addUser(User user) {
         userRepository.save(user);

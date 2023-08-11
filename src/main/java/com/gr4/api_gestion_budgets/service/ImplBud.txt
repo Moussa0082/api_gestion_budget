@@ -1,0 +1,95 @@
+package com.gr4.api_gestion_budgets.service;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.gr4.api_gestion_budgets.models.Budget;
+import com.gr4.api_gestion_budgets.models.Depense;
+import com.gr4.api_gestion_budgets.models.EmailDetails;
+import com.gr4.api_gestion_budgets.repository.BudgetRepository;
+import com.gr4.api_gestion_budgets.repository.DepenseRepository;
+
+@Service
+public class ImplBud {
+
+    @Autowired
+    BudgetRepository budgetRepository;
+
+    @Autowired
+    EmailServiceImpl emailServiceImpl;
+
+    @Autowired 
+    DepenseRepository depenseRepository;
+    
+    public String creerDepense(Depense depense) {
+        // Récupérer le budget associé à la dépense
+        Budget budgets = budgetRepository.findById(depense.getBudget().getId()).orElse(null);
+    
+        if (budgets == null) {
+            return "Budget non trouvé pour l'ID spécifié.";
+        }
+    
+        int montantDepense = depense.getMont_depense();
+        int montantBudget = budgets.getMont_bud();
+        int montantAlerte = budgets.getMont_dalerte();
+    
+        switch (compareMontantDepenseToBudget(montantDepense, montantBudget)) {
+            case MONTANT_SUPERIEUR:
+                return "Le montant de la dépense ne doit pas dépasser celui du budget.";
+            case MONTANT_20_POURCENT_ET_PLUS:
+                // Envoyer un e-mail d'alerte
+                String msg = "Attention ! Vous avez effectué une dépense équivalente à " + montantDepense +
+                             " Fcfa, soit plus de 20% de votre montant d'alerte de " + montantAlerte + " Fcfa." +
+                             " Veuillez gérer vos dépenses avec prudence.";
+                EmailDetails details = new EmailDetails(depense.getUser().getEmail(), msg, "Alerte Dépense");
+                emailServiceImpl.sendSimpleMail(details);
+                break;
+            default:
+                // Enregistrer la dépense dans la base de données
+                depenseRepository.save(depense);
+    
+                // Mettre à jour le montant restant dans le budget
+                int montantRestant = montantBudget - montantDepense;
+                budgets.setMont_bud(montantRestant);
+                budgetRepository.save(budgets);
+    
+                // Envoyer un e-mail pour informer de la dépense
+                String mssg = " Vous avez dépensé  " + depense.getMont_depense() + " Fcfa." +
+                             " pour une dépense de " + budgets.getCategorie().getNom() +
+                             " le  : " + formattedDate +
+                             " à "+ actualTime +
+                             "  description : " + depense.getDescription() +
+                             ". \n Actuellement, votre budget est de : " + budgets.getMont_bud() + " Fcfa !" +
+                             " Votre budget de la dernière dépense était de : " + montantInitialBudget +
+                             " votre budget initial est :" + mt_tot;
+                EmailDetails detailss = new EmailDetails(depense.getUser().getEmail(), mssg, "Alerte dépense");
+                emailServiceImpl.sendSimpleMail(detailss);
+                return "Dépense créée avec succès. Montant restant dans le budget : " + montantRestant +
+                       " Votre montant de la dernière dépense était de : " + montantInitialBudget + " Fcfa.";
+        }
+    
+        return ""; // Retour par défaut (non atteint)
+    }
+    enum MontantDepenseComparison {
+        MONTANT_SUPERIEUR,
+        MONTANT_20_POURCENT_ET_PLUS,
+        MONTANT_OK
+    }
+    
+    private MontantDepenseComparison compareMontantDepenseToBudget(int montantDepense, int montantBudget) {
+        if (montantDepense > montantBudget) {
+            return MontantDepenseComparison.MONTANT_SUPERIEUR;
+        } else if (montantDepense ==  montantBudget) {
+            return MontantDepenseComparison.MONTANT_20_POURCENT_ET_PLUS;
+        } else {
+            return MontantDepenseComparison.MONTANT_OK;
+        }
+    }
+    
+    
+    
+            
+    }

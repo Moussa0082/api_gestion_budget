@@ -25,28 +25,34 @@ public class Budget{
     @Column(nullable = false)
     private Integer mont_bud;
 
+    @Temporal(TemporalType.DATE)
     @JsonFormat(pattern = "yyyy-MM-dd")
     @Column
     private Date date_debut;
 
+    @Temporal(TemporalType.DATE)
     @JsonFormat(pattern = "yyyy-MM-dd")
     @Column
     private Date date_fin;
 
     @Column
     private Integer mont_dalerte;
+    
+    @Column
+    private Integer mont_total;
+    
 
     
-    @OneToOne(mappedBy = "budget")
+    @ManyToOne
+    @JoinColumn(name = "id_user")
     private User user;
 
-    
 
-    @OneToOne
-    @JoinColumn(name = "id_categorie", nullable=false)
+    @ManyToOne
+    @JoinColumn(name = "id_categorie")
     private Categorie categorie;
 
-    @OneToMany(mappedBy = "budget")
+    @OneToMany(mappedBy = "budget", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<Depense> depense;
 
