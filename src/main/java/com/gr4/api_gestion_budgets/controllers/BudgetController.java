@@ -2,6 +2,8 @@ package com.gr4.api_gestion_budgets.controllers;
 
 import java.util.List;
 
+import Exception_global.CategorieNotFoundException;
+import com.gr4.api_gestion_budgets.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,17 +18,17 @@ import org.springframework.web.bind.annotation.RestController;
 import com.gr4.api_gestion_budgets.models.Budget;
 import com.gr4.api_gestion_budgets.models.Depense;
 import com.gr4.api_gestion_budgets.repository.BudgetRepository;
-import com.gr4.api_gestion_budgets.service.BudgetService;
 import com.gr4.api_gestion_budgets.service.BudgetServiceImpl;
 
 import io.swagger.v3.oas.annotations.Operation;
+
 
 @RestController
 @RequestMapping("/budget")
 public class BudgetController {
 
     @Autowired
-    private BudgetServiceImpl budgetServiceImpl;
+    BudgetServiceImpl budgetServiceImpl;
 
     @Autowired
     BudgetRepository budgetRepository;
@@ -44,6 +46,7 @@ public class BudgetController {
         // return new ResponseEntity<>("Budget Créer avec succès avec un montant de  " + br.getMont_bud() , HttpStatus.OK);
 
     }
+
     
     @Operation(summary = "Mettre à jour un budget existant")
    @PutMapping("/update/{id}")
@@ -51,7 +54,6 @@ public class BudgetController {
 
         return budgetServiceImpl.modifier(id, budget);
     }
-
 
 
     
@@ -62,18 +64,8 @@ public class BudgetController {
         return budgetServiceImpl.getAllBudget();
     }
 
-
-    // Endpoint pour ajouter une dépense à un budget
-    @PutMapping("/{Id}/addDepense")
-    public ResponseEntity<Budget> addDepenseToBudget(@PathVariable int Id, @RequestBody Depense depense) {
-        try {
-            Budget updatedBudget = budgetServiceImpl.addDepenseToBudget(Id, depense);
-            return new ResponseEntity<>(updatedBudget, HttpStatus.CREATED);
-        } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    @PutMapping("/{Id}/addDep")
+    public String creer(@RequestBody Depense depense){
+        return budgetServiceImpl.creerDepense(depense);
     }
-
 }

@@ -2,8 +2,13 @@ package com.gr4.api_gestion_budgets.controllers;
 
 import com.gr4.api_gestion_budgets.models.Categorie;
 import com.gr4.api_gestion_budgets.service.CategorieService;
+
+import com.gr4.api_gestion_budgets.service.CategorieServiceImp;
+import io.swagger.v3.oas.annotations.Operation;
+
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -11,35 +16,38 @@ import java.util.Optional;
 
 @RestController
 @AllArgsConstructor
+@Data
 @RequestMapping("/apiCat")
 public class CategorieController {
-    private final CategorieService categorieService;
+    private final   CategorieService categorieService;
 
-    //Créer une categorie
+    @Operation(summary = "Créer une categorie")
     @PostMapping("/create")
-    public Categorie create(@Valid @RequestBody Categorie categorie){
+    public String create(@Valid @RequestBody Categorie categorie) {
         return categorieService.creer(categorie);
     }
-    //Afficher les categories
+
+    @Operation(summary = "Lire la liste des ctegories")
     @GetMapping("/read")
     public List<Categorie> read(){
         return categorieService.lire();
     }
-    //Lire une categorie spécifique
+
+    @Operation(summary = "Lire une categorie spécifique")
     @GetMapping("/read/{id}")
-    public Optional<Categorie> getCustomer(@PathVariable Integer id) {
+    public Optional<Categorie> getCustomer(@PathVariable int id) {
         return categorieService.findById(id);
     }
 
-    //Mettre à jour une catégorie
+    @Operation(summary = "Mettre à jour une categorie spécifique")
     @PutMapping("/update/{id}")
-    public Categorie Update(@PathVariable Integer id, @RequestBody Categorie quiz){
-        return categorieService.modifier(id, quiz);
+    public Categorie Update(@PathVariable int id, @RequestBody Categorie categorie){
+        return categorieService.modifier(id, categorie);
     }
 
-    //Effacer une categorie
+    @Operation(summary = "Supprimer une categorie")
     @DeleteMapping("/delete/{id}")
-    public String delete(@PathVariable Integer id){
+    public String delete(@PathVariable int id){
         return categorieService.supprimer(id);
     }
 

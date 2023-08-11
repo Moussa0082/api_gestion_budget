@@ -17,9 +17,6 @@ public interface BudgetService{
     //Liste des budget
     ResponseEntity <List<Budget>> getAllBudget();
 
-    //Supprimer budget
 
-    ResponseEntity <String> supprimerBudget(Integer id, Budget budget);
-
-    
+    ResponseEntity<String> supprimerBudget(Integer id, Budget budget);
 }

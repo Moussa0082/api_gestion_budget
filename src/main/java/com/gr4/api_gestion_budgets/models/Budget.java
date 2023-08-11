@@ -18,10 +18,11 @@ public class Budget{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    @Column(nullable = false)
+    private Integer id;
 
 
-    @Column
+    @Column(nullable = false)
     private Integer mont_bud;
 
     @JsonFormat(pattern = "yyyy-MM-dd")
@@ -39,17 +40,12 @@ public class Budget{
     @OneToOne(mappedBy = "budget")
     private User user;
 
-    
-    @OneToMany(mappedBy = "budget")
-    @JsonIgnore
-    private List<Alerte> alerte;
 
     @OneToOne
-    @JoinColumn(name = "id_categorie", nullable=false)
+    @JoinColumn(name = "id_categorie", nullable = false)
     private Categorie categorie;
 
     @OneToMany(mappedBy = "budget")
     @JsonIgnore
     private List<Depense> depense;
-
 }

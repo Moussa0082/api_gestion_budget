@@ -1,7 +1,6 @@
 package com.gr4.api_gestion_budgets.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -43,10 +42,7 @@ public class User {
     private String password;
     
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "idBudget")
     @JsonIgnore
     private Budget budget;
-
- 
-   
 }
