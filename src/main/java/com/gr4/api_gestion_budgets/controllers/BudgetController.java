@@ -3,7 +3,6 @@ package com.gr4.api_gestion_budgets.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.gr4.api_gestion_budgets.models.Budget;
 import com.gr4.api_gestion_budgets.models.Depense;
 import com.gr4.api_gestion_budgets.repository.BudgetRepository;
-import com.gr4.api_gestion_budgets.service.AlerteService;
 import com.gr4.api_gestion_budgets.service.BudgetServiceImpl;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -26,8 +24,7 @@ import io.swagger.v3.oas.annotations.Operation;
 @RequestMapping("/budget")
 public class BudgetController {
 
-    @Autowired
-    private AlerteService alerteService;
+    
 
     @Autowired
     BudgetServiceImpl budgetServiceImpl;
@@ -80,7 +77,7 @@ public class BudgetController {
     //         return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     //     }
     // }
-
+      @Operation(summary = "Depenser de l'argent")
     @PutMapping("/{Id}/addDep")
     public String creer(@RequestBody Depense depense){
         return budgetServiceImpl.creerDepense(depense);

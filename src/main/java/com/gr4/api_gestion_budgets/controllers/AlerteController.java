@@ -16,7 +16,7 @@ import com.gr4.api_gestion_budgets.models.User;
 import com.gr4.api_gestion_budgets.service.AlerteService;
 
 @RestController
-@RequestMapping("/api/alertes")
+@RequestMapping("/alertes")
 public class AlerteController {
 
     @Autowired

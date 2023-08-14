@@ -23,12 +23,12 @@ public class Alerte {
 
   
     
-    @Column(nullable = false)
+    @Column(length = 1000)
     private String message;
 
-    @Temporal(TemporalType.DATE)
+    // @Temporal(TemporalType.DATE)
     @Column(nullable = false)
-    private Date date;
+    private String date;
 
     @ManyToOne
     @JoinColumn(name = "user_id")

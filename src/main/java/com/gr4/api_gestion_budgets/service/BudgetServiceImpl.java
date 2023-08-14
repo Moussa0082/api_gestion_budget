@@ -96,42 +96,6 @@ public class BudgetServiceImpl implements BudgetService{
         return new ResponseEntity<>("supprimer avec succès", HttpStatus.OK);
     }
 
-   
-
-   // Méthode pour ajouter une dépense à un budget donné
-    // public Budget addDepenseToBudget(int Id, Depense depense, Budget budget) {
-    //     Budget existingBudget = budgetRepository.findById(Id).orElse(null);
-
-    //     if (existingBudget != null) {
-    //         int montantDepense = depense.getMont_depense();
-    //         int nouveauMontantTotal = existingBudget.getMont_bud() - montantDepense;
-
-    //         // Vérifier que le montant total ne devient pas négatif
-    //         if (nouveauMontantTotal >= 0) {
-    //             existingBudget.setMont_bud(nouveauMontantTotal);
-
-    //             // Enregistrer la modification du budget dans la base de données
-    //             budgetRepository.save(existingBudget);
-
-    //             // Définir la relation entre la dépense et le budget
-    //             depense.setBudget(existingBudget);
-    //             depenseRepository.save(depense);
-
-    //             String msg = "Votre budget est de " + budget.getMont_bud() + " Fcfa." +
-    //                      "\nPour une dépense de " + depense.getBudget().getCategorie().getNom() +
-    //                      ". \nMaintenant votre solde principal est de : " + budget.getMont_bud() + " Fcfa !";
-    //         EmailDetails details = new EmailDetails(budget.getUser().getEmail(), msg, "Détails de votre dépense");
-    //         emailServiceImpl.sendSimpleMail(details);
-
-    //             return existingBudget;
-    //         } else {
-    //             throw new IllegalArgumentException("Montant de la dépense trop élevé pour le budget actuel.");
-    //         }
-    //     } else {
-    //         throw new IllegalArgumentException("Budget non trouvé avec l'ID spécifié.");
-    //     }
-    // }
-
 
 
     public String creerDepense(Depense depense) {
@@ -200,11 +164,17 @@ public class BudgetServiceImpl implements BudgetService{
         // Vérifier si le montant de la dépense est supérieur ou égal à 20% du montant d'alerte
         else if (montantBudget <=  mt_al) {
 
+            depenseRepository.save(depense);
+             
+            // Mettre à jour le montant restant dans le budget
+            
+            int montantRestant = montantBudget - montantDepense;
+            budgets.setMont_bud(montantRestant);
             budgetRepository.save(budgets);
              // Envoyer un e-mail pour informer de l'annulation de la dépense
         String msgg = "Votre dépense de " + montantDepense +
-        " Fcfa a été enregistré mais attention \nvotre budget restant est : "+ budgets.getMont_bud()+ " rappelez vous, \nvotre montant d'alerte est " 
-        + budgets.getMont_dalerte() + " Fcfa." +
+        " FCFA a été enregistré mais attention \nvotre budget restant est : "+ budgets.getMont_bud()+ " rappelez vous, \nvotre montant d'alerte est " 
+        + budgets.getMont_dalerte() + " FCFA." +
         " Veuillez ajuster vos dépenses en conséquence.";
        EmailDetails details = new EmailDetails
        (depense.getUser().getEmail(), msgg, "Alerte dépense");
@@ -212,7 +182,7 @@ public class BudgetServiceImpl implements BudgetService{
 
            
 
-      return "Le montant de la dépense est inferieur au montant d'alerte. Mais la dépense a été enregistrée .";
+      return "Le montant du budget est inferieur au montant d'alerte ,  il ne vous reste que : " + budgets.getMont_bud() + " veuiller ajuster votre budget";
       }
         
         else {
@@ -243,11 +213,11 @@ public class BudgetServiceImpl implements BudgetService{
 
             
             // // Créer une instance d'Alerte et la sauvegarder
-            //     Alerte alerte = new Alerte();
-            //     alerte.setMessage(msg);
-            //     // alerte.setDate(d); // Vous devez importer java.util.Date
-            //     alerte.setUser(depense.getUser()); // Assurez-vous que l'utilisateur est défini correctement
-            //     alerteService.saveAlerte(alerte); // Cette méthode doit être implémentée dans AlerteService
+                Alerte alerte = new Alerte();
+                alerte.setMessage(msg);  
+                alerte.setDate(dateActuel); // Vous devez importer java.util.Date
+                alerte.setUser(depense.getUser()); // Assurez-vous que l'utilisateur est défini correctement
+                alerteService.saveAlerte(alerte); // Cette méthode doit être implémentée dans AlerteService
                     
             // Retourner un message de succès avec le montant restant dans le budget
             return "Dépense créée avec succès. Montant restant dans le budget : " + montantRestant + 
